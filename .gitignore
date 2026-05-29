@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+myenv/
+myvenv/
+.idea/
+.vscode/
+*.pkgf
+*.dYSM*
