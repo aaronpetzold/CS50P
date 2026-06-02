@@ -20,6 +20,8 @@ def get_argument(fonts):
         if (sys.argv[1] in ("-f", "--font")) and (sys.argv[2] in fonts):
             font_name = sys.argv[2]
             return font_name
+        else: 
+            sys.exit("Invalid usage")
     else:
         sys.exit("Invalid usage")
 

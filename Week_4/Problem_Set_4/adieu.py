@@ -15,6 +15,7 @@ def get_names():
             name = input("Name: ")
             names.append(name)
         except EOFError:
+            print()
             break
     return names
 

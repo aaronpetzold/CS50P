@@ -37,6 +37,7 @@ def guessing(random_number):
                 print("Too small!")
             else:
                 print("Just right!")
+                return
         except ValueError:
             continue
 
