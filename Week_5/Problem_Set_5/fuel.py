@@ -16,7 +16,7 @@ def convert(fraction):
     y = int(y)
     if y == 0:
         raise ZeroDivisionError
-    if x > y or x < 0:
+    if x > y or x < 0 or y < 0:
         raise ValueError
     return round(x / y * 100)
 

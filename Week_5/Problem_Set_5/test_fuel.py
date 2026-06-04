@@ -26,6 +26,10 @@ def test_value_error():
         c("cat")
     with pytest.raises(ValueError):
         c("cat/dog")
+    with pytest.raises(ValueError):
+        c("1/-2")
+    with pytest.raises(ValueError):
+        c("-1/2")
 
 
 def test_zero_division_error():
