@@ -5,9 +5,11 @@ from PIL import Image
 
 def main():
     # Open the input CSV file for reading and the output CSV file for writing
-    with open("views.csv", "r") as views, open("analysis.csv", "w", newline="") as analysis:
+    with open("views.csv", "r") as views, open(
+        "analysis.csv", "w", newline=""
+    ) as analysis:
         reader = csv.DictReader(views)
-        
+
         # Create the headers for the new file (old headers + "brightness")
         fieldnames = reader.fieldnames + ["brightness"]
         writer = csv.DictWriter(analysis, fieldnames=fieldnames)

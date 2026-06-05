@@ -68,21 +68,6 @@ with open("names.txt") as file:
         print("hello,", line.rstrip())
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """
 names = []
 

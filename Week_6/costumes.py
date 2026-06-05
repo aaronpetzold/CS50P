@@ -2,7 +2,6 @@ import sys
 
 from PIL import Image
 
-
 images = []
 
 for arg in sys.argv[1:]:
@@ -11,9 +10,5 @@ for arg in sys.argv[1:]:
 
 
 images[0].save(
-    "custumes.gif",
-    save_all=True,
-    append_images=[images[1:]],
-    duration=200,
-    loop=0
+    "custumes.gif", save_all=True, append_images=[images[1:]], duration=200, loop=0
 )
