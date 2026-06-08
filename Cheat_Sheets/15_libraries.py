@@ -1,7 +1,36 @@
 # === Libraries & APIs ===
-# How to use Python's standard library, external APIs, and create your own modules/packages
 
-# === IMPORTS (Basics) ===
+
+# ========== TABLE OF CONTENTS ==========
+#
+# 1. IMPORTS (Basics)
+# 2. sys (System & Command Line)
+# 3. os (Operating System Interface)
+# 4. subprocess (Run External Commands)
+# 5. datetime (Dates & Times)
+# 6. time (Sleep & Timers)
+# 7. re (Regular Expressions)
+# 8. json (API Data Format)
+# 9. requests (HTTP & APIs)
+# 10. collections (Advanced Data Structures)
+# 11. itertools (Iteration Tools)
+# 12. statistics (Basic Stats)
+# 13. hashlib (Hashing for Security)
+# 14. argparse (Professional CLI Tools)
+# 15. Third-Party Libraries (pip install)
+# 16. Creating Your Own Module
+# 17. Creating Your Own Package
+# 18. if __name__ == "__main__"
+# 19. Managing Packages with pip
+# 20. Quick Reference
+#
+# ========================================
+
+
+# How to use Python's standard library, external APIs, and create your own modules/packages.
+
+
+# === 1. IMPORTS (Basics) ===
 
 # Import entire module
 import math
@@ -24,7 +53,8 @@ print(dir(random))          # List all names
 help(random.choice)         # Show documentation
 
 
-# === sys (System & Command Line) ===
+
+# === 2. sys (System & Command Line) ===
 
 import sys
 
@@ -52,7 +82,8 @@ sys.stderr.write("Error!\n")        # For error messages
 sys.setrecursionlimit(2000)
 
 
-# === os (Operating System Interface) ===
+
+# === 3. os (Operating System Interface) ===
 
 import os
 
@@ -80,7 +111,8 @@ os.system("echo Hello")             # Runs in shell (simple but limited)
 # Better: use subprocess module
 
 
-# === subprocess (Run External Commands) ===
+
+# === 4. subprocess (Run External Commands) ===
 
 import subprocess
 
@@ -94,7 +126,8 @@ print(result.returncode)            # 0 if success
 subprocess.run("echo Hello", shell=True)
 
 
-# === datetime (Dates & Times) ===
+
+# === 5. datetime (Dates & Times) ===
 
 import datetime as dt
 
@@ -121,7 +154,8 @@ print(age.days)                     # Number of days
 # %Y = 2024, %m = 01, %d = 31, %H = 24h, %I = 12h, %M = minute, %S = second
 
 
-# === time (Sleep & Timers) ===
+
+# === 6. time (Sleep & Timers) ===
 
 import time
 
@@ -135,7 +169,8 @@ elapsed = time.time() - start
 print(f"Took {elapsed:.2f} seconds")
 
 
-# === re (Regular Expressions) ===
+
+# === 7. re (Regular Expressions) ===
 
 import re
 
@@ -159,7 +194,8 @@ parts = re.split(r"\s+", "a  b   c")        # ['a','b','c']
 # \d = digit, \w = word, \s = whitespace, . = anything, + = one or more, * = zero or more
 
 
-# === json (API Data Format) ===
+
+# === 8. json (API Data Format) ===
 
 import json
 
@@ -181,7 +217,8 @@ with open("output.json", "w") as f:
     json.dump(data, f, indent=2)
 
 
-# === requests (HTTP & APIs) ===
+
+# === 9. requests (HTTP & APIs) ===
 
 # Install: pip install requests
 import requests
@@ -265,7 +302,8 @@ with open("image.jpg", "wb") as f:
 # print(resp.json()["main"]["temp"])
 
 
-# === collections (Advanced Data Structures) ===
+
+# === 10. collections (Advanced Data Structures) ===
 
 from collections import Counter, defaultdict, namedtuple, deque
 
@@ -292,7 +330,8 @@ q.appendleft(0)                 # [0,1,2,3]
 q.popleft()                     # 0
 
 
-# === itertools (Iteration Tools) ===
+
+# === 11. itertools (Iteration Tools) ===
 
 from itertools import chain, cycle, product, combinations, permutations
 
@@ -313,7 +352,8 @@ list(combinations([1,2,3], 2))  # [(1,2),(1,3),(2,3)]
 list(permutations([1,2,3], 2))  # [(1,2),(1,3),(2,1),(2,3),(3,1),(3,2)]
 
 
-# === statistics (Basic Stats) ===
+
+# === 12. statistics (Basic Stats) ===
 
 import statistics
 
@@ -323,7 +363,8 @@ statistics.median(data)         # 30
 statistics.stdev(data)          # ~15.81 (standard deviation)
 
 
-# === hashlib (Hashing for Security) ===
+
+# === 13. hashlib (Hashing for Security) ===
 
 import hashlib
 
@@ -336,7 +377,8 @@ password = "mysecret".encode()
 hashed = hashlib.sha256(password).hexdigest()
 
 
-# === argparse (Professional CLI Tools) ===
+
+# === 14. argparse (Professional CLI Tools) ===
 
 import argparse
 
@@ -353,7 +395,8 @@ if args.verbose:
 # Run script: python script.py --input data.txt --verbose
 
 
-# === Third-Party Libraries (pip install) ===
+
+# === 15. Third-Party Libraries (pip install) ===
 
 # ---- requests (already covered) ----
 # pip install requests
@@ -380,7 +423,8 @@ if args.verbose:
 # soup = BeautifulSoup(html, "html.parser")
 
 
-# === Creating Your Own Module ===
+
+# === 16. Creating Your Own Module ===
 
 # A module is a single .py file.
 # Save as mymodule.py:
@@ -399,7 +443,8 @@ from mymodule import add
 print(add(2, 3))
 
 
-# === Creating Your Own Package ===
+
+# === 17. Creating Your Own Package ===
 
 # A package is a directory with an __init__.py file.
 # Directory structure:
@@ -463,7 +508,8 @@ __all__ = ["main_function", "VERSION"]
 # Python caches compiled bytecode here. Safe to delete, will be regenerated.
 
 
-# === if __name__ == "__main__" ===
+
+# === 18. if __name__ == "__main__" ===
 
 # Prevents code from running when module/package is imported.
 def main():
@@ -474,7 +520,8 @@ if __name__ == "__main__":
     main()
 
 
-# === Managing Packages with pip ===
+
+# === 19. Managing Packages with pip ===
 
 # List installed packages: pip list
 # Install: pip install package_name
@@ -491,7 +538,8 @@ setup(name="mypackage", version="0.1", packages=find_packages())
 # Then: pip install -e .   (changes reflect immediately)
 
 
-# === Quick Reference ===
+
+# === 20. Quick Reference ===
 # | Library      | Purpose               | Key Functions                        |
 # |--------------|-----------------------|--------------------------------------|
 # | sys          | System/CLI            | argv, exit, path                     |

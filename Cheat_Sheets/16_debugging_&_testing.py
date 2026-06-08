@@ -1,9 +1,31 @@
 # === Debugging & Testing ===
 
+
+# ========== TABLE OF CONTENTS ==========
+#
+# 1. PRINT DEBUGGING (Quick & Dirty)
+# 2. ASSERTIONS (Runtime Checks)
+# 3. PYTEST (Testing Framework)
+# 4. PYTEST ASSERT PATTERNS
+# 5. PYTEST FIXTURES (Setup/Teardown)
+# 6. PYTEST MARKS (Categorizing Tests)
+# 7. VS CODE DEBUGGER (Interactive Debugging)
+# 8. LOGGING (Professional Debug Output)
+# 9. BUILT-IN DEBUGGER (pdb)
+# 10. TEST STRUCTURE (AAA Pattern)
+# 11. RUNNING TESTS COMMANDS
+# 12. PYTEST CONFIGURATION (pytest.ini)
+# 13. QUICK REFERENCE TABLE
+#
+# ========================================
+
+
 # Debugging = finding and fixing errors in your code.
 # Testing = writing code that checks if your code works correctly.
 
+
 # ---------- 1. PRINT DEBUGGING (Quick & Dirty) ----------
+
 # Definition: Inserting print() statements to see variable values and program flow.
 # Use when: You need a fast, no-setup way to see what's happening.
 
@@ -24,7 +46,9 @@ value = "42"
 print(f"Type of value: {type(value)}")  # <class 'str'>
 
 
+
 # ---------- 2. ASSERTIONS (Runtime Checks) ----------
+
 # Definition: Assertions test if a condition is True. If False, raises AssertionError.
 # Use when: You want to catch impossible states during development.
 
@@ -46,7 +70,9 @@ assert isinstance(value, int), "Value must be integer"
 assert result == expected, f"Expected {expected}, got {result}"
 
 
+
 # ---------- 3. PYTEST (Testing Framework) ----------
+
 # Definition: A library that discovers and runs tests automatically.
 # Install: pip install pytest
 
@@ -66,7 +92,9 @@ def test_add():
 # Run tests: just type `pytest` in the terminal.
 
 
+
 # ---------- 4. PYTEST ASSERT PATTERNS ----------
+
 # Definition: Different ways to check expected behavior.
 
 # Equality
@@ -102,7 +130,9 @@ with pytest.raises(ValueError, match="Invalid input"):
     validate_input(-1)
 
 
+
 # ---------- 5. PYTEST FIXTURES (Setup/Teardown) ----------
+
 # Definition: Fixtures provide reusable data or setup for tests.
 # Use when: Multiple tests need the same preparation.
 
@@ -131,7 +161,9 @@ def temp_file():
     os.remove("temp.txt")
 
 
+
 # ---------- 6. PYTEST MARKS (Categorizing Tests) ----------
+
 # Definition: Marks let you tag tests for selective running or skipping.
 
 # Mark as slow
@@ -174,7 +206,9 @@ def test_add(a, b, expected):
     assert a + b == expected
 
 
+
 # ---------- 7. VS CODE DEBUGGER (Interactive Debugging) ----------
+
 # Definition: A graphical tool that lets you pause execution and inspect variables.
 # Use when: You need to step through code line by line.
 
@@ -197,7 +231,9 @@ def test_add(a, b, expected):
 # - Breakpoints: list of all breakpoints
 
 
+
 # ---------- 8. LOGGING (Professional Debug Output) ----------
+
 # Definition: Logging records messages with severity levels, can write to file.
 # Use when: You need persistent logs or different output levels.
 
@@ -227,7 +263,9 @@ if error_occurred:
     logging.error(f"Failed with value {x}")
 
 
+
 # ---------- 9. BUILT-IN DEBUGGER (pdb) ----------
+
 # Definition: Command-line debugger built into Python.
 # Use when: You cannot use VS Code (e.g., on remote server).
 
@@ -254,7 +292,9 @@ def buggy_function(x):
 # python -m pdb my_script.py
 
 
+
 # ---------- 10. TEST STRUCTURE (AAA Pattern) ----------
+
 # Definition: Arrange, Act, Assert – a standard pattern for organizing tests.
 # - Arrange: Set up input and expected state
 # - Act: Call the function being tested
@@ -283,7 +323,9 @@ def test_edge_cases():
     assert process([0]) == [0]
 
 
+
 # ---------- 11. RUNNING TESTS COMMANDS ----------
+
 # Command line examples (not Python code, but useful to know):
 
 # Run all tests in current directory
@@ -311,7 +353,9 @@ def test_edge_cases():
 # $ pytest -n 4
 
 
+
 # ---------- 12. PYTEST CONFIGURATION (pytest.ini) ----------
+
 # Definition: A configuration file to customize pytest behavior.
 
 # Example pytest.ini file (create in project root):
@@ -336,7 +380,9 @@ norecursedirs = .venv .git __pycache__
 """
 
 
-# ---------- Quick Reference Table ----------
+
+# ---------- 13. QUICK REFERENCE TABLE ----------
+
 # | Concept              | Purpose                                   | Example                         |
 # |----------------------|-------------------------------------------|---------------------------------|
 # | print()              | Quick variable inspection                 | print(f"x={x}")                 |

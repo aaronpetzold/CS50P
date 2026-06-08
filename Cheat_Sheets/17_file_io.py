@@ -1,6 +1,8 @@
 # === File Input/Output (File I/O) ===
 
+
 # ========== TABLE OF CONTENTS ==========
+#
 # 1. OPENING A FILE
 # 2. READING FILES
 # 3. WRITING FILES
@@ -14,12 +16,16 @@
 # 11. PICKLE (Object Serialization)
 # 12. IN-MEMORY FILES (StringIO, BytesIO)
 # 13. QUICK REFERENCE
+#
 # ========================================
+
 
 # Definition: File I/O is the process of reading data from and writing data to files on disk.
 # A file object is Python's connection to a file on your computer.
 
+
 # ---------- 1. OPENING A FILE ----------
+
 # Definition: Opening a file creates a file object that allows you to read from or write to that file.
 # The open() function takes a filename and a mode. The mode tells Python what you want to do with the file.
 
@@ -43,7 +49,9 @@ with open("data.txt", "r") as file:
 # File is automatically closed when the indented block ends
 
 
+
 # ---------- 2. READING FILES ----------
+
 # Definition: Reading a file means loading its contents from disk into memory as a string or list.
 
 # Assume "example.txt" contains these three lines:
@@ -83,7 +91,9 @@ with open("example.txt", "r") as f:
     data = f.read(20)    # read 20 characters
 
 
+
 # ---------- 3. WRITING FILES ----------
+
 # Definition: Writing to a file means sending data from memory to be stored on disk.
 
 # Write mode ("w") - overwrites entire file or creates new file
@@ -101,7 +111,9 @@ with open("log.txt", "a") as f:
     f.write("New log entry\n")
 
 
+
 # ---------- 4. WORKING WITH PATHS ----------
+
 # Definition: A path is the location of a file or folder in your computer's file system.
 
 import os
@@ -153,7 +165,9 @@ shutil.move("old.txt", "new.txt")        # move/rename
 shutil.rmtree("folder")                  # delete folder with contents
 
 
+
 # ---------- 5. BINARY FILES ----------
+
 # Definition: Binary files contain raw bytes (not human-readable text), such as images, audio, or executables.
 # Binary mode prevents Python from trying to decode the bytes as text.
 
@@ -166,7 +180,9 @@ with open("copy.jpg", "wb") as f:
     f.write(data)     # Writes bytes directly
 
 
+
 # ---------- 6. FILE MODES CHEAT SHEET ----------
+
 # | Mode | Description                          | File must exist | Overwrites? |
 # |------|--------------------------------------|----------------|-------------|
 # | "r"  | Read only (text)                     | Yes            | N/A         |
@@ -179,6 +195,7 @@ with open("copy.jpg", "wb") as f:
 # | "r+" | Read and write (starts at beginning) | Yes            | Partial     |
 # | "w+" | Read and write (overwrites)          | No (creates)   | Yes         |
 # | "a+" | Read and append (starts at end)      | No (creates)   | No          |
+
 
 
 # ---------- 7. COMMON PATTERNS ----------
@@ -217,7 +234,9 @@ with open("in.txt") as fin, open("out.txt", "w") as fout:
     fout.write(fin.read())
 
 
+
 # ---------- 8. EXCEPTION HANDLING WITH FILES ----------
+
 # Definition: File operations can fail for many reasons; exception handling lets you respond gracefully.
 
 try:
@@ -233,7 +252,9 @@ except IOError as e:
     print(f"Input/output error: {e}")
 
 
+
 # ---------- 9. CSV FILES (Comma-Separated Values) ----------
+
 # Definition: CSV is a simple file format for tabular data where each line is a row and commas separate columns.
 
 import csv
@@ -269,7 +290,9 @@ with open("data.tsv", "w", newline="") as f:
     writer.writerow(["Hello, world", "value"])
 
 
+
 # ---------- 10. JSON FILES (JavaScript Object Notation) ----------
+
 # Definition: JSON is a text format for storing structured data that looks very similar to Python dictionaries and lists.
 
 import json
@@ -294,7 +317,9 @@ data_with_date = {"now": datetime.now()}
 json_str = json.dumps(data_with_date, default=str)
 
 
+
 # ---------- 11. PICKLE (Object Serialization) ----------
+
 # Definition: Pickle converts any Python object to bytes and back.
 
 import pickle
@@ -310,7 +335,9 @@ with open("data.pkl", "rb") as f:
     loaded = pickle.load(f)
 
 
+
 # ---------- 12. IN-MEMORY FILES (StringIO, BytesIO) ----------
+
 # Definition: File-like objects that live in RAM, not on disk.
 
 from io import StringIO, BytesIO
@@ -332,7 +359,9 @@ writer.writerow(["a", "b"])
 csv_data = output.getvalue()
 
 
+
 # ---------- 13. QUICK REFERENCE ----------
+
 # | Task                          | Code                                      |
 # |-------------------------------|-------------------------------------------|
 # | Read entire file              | `with open(f) as f: content = f.read()`  |
