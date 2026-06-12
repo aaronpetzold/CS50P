@@ -1,11 +1,13 @@
 import pytest
 from jar import Jar
 
+
 # --- Test Initialization ---
 
 
-# Valid
-def test_init_valid():
+def test_init():
+
+    # Valid
     jar1 = Jar(12)
     assert jar1.capacity == 12
     assert jar1.size == 0
@@ -18,9 +20,7 @@ def test_init_valid():
     assert jar3.capacity == 30
     assert jar3.size == 0
 
-
-# Invalid
-def test_init_invalid_type():
+    # Invalid Type
     with pytest.raises(ValueError):
         Jar("cat")
     with pytest.raises(ValueError):
@@ -28,8 +28,7 @@ def test_init_invalid_type():
     with pytest.raises(ValueError):
         Jar(True)
 
-
-def test_init_invalid_int():
+    # Invalid Int
     with pytest.raises(ValueError):
         Jar(-1)
 
@@ -49,21 +48,19 @@ def test_str():
 # --- Test Deposit ---
 
 
-# Valid
-def test_valid_deposit():
+def test_deposit():
+
+    # Valid
     jar = Jar()
     jar.deposit(12)
     assert jar.size == 12
 
-
-# Invalid
-def test_invalid_deposit_negative_n():
+    # Invalid: Negative n
     jar = Jar()
     with pytest.raises(ValueError):
         jar.deposit(-6)
 
-
-def test_invalid_deposit_too_large():
+    # Invalid: deposite too large
     jar = Jar()
     with pytest.raises(ValueError):
         jar.deposit(13)
@@ -72,23 +69,21 @@ def test_invalid_deposit_too_large():
 # --- Test Withdraw ---
 
 
-# Valid
-def test_valid_withdraw():
+def test_withdraw():
+
+    # Valid
     jar = Jar()
     jar.deposit(12)
     jar.withdraw(7)
     assert jar.capacity == 12
     assert jar.size == 5
 
-
-# Invalid
-def test_invalid_withdraw_negative_n():
+    # Invalid: withdraw negative n
     jar = Jar()
     with pytest.raises(ValueError):
         jar.withdraw(-5)
 
-
-def test_invalid_withdraw_too_large():
+    # Invalid: withdraw too large
     jar = Jar()
     with pytest.raises(ValueError):
         jar.withdraw(14)
