@@ -3,33 +3,37 @@
 
 # ========== TABLE OF CONTENTS ==========
 #
-# 1. PRINT DEBUGGING (Quick & Dirty)
+# 1. PRINT STATEMENT DEBUGGING
 # 2. ASSERTIONS (Runtime Checks)
-# 3. PYTEST (Testing Framework)
-# 4. PYTEST ASSERT PATTERNS
-# 5. PYTEST FIXTURES (Setup/Teardown)
-# 6. PYTEST MARKS (Categorizing Tests)
-# 7. VS CODE DEBUGGER (Interactive Debugging)
-# 8. LOGGING (Professional Debug Output)
-# 9. BUILT-IN DEBUGGER (pdb)
-# 10. TEST STRUCTURE (AAA Pattern)
-# 11. RUNNING TESTS COMMANDS
-# 12. PYTEST CONFIGURATION (pytest.ini)
-# 13. QUICK REFERENCE TABLE
+# 3. THE `breakpoint()` BUILT‑IN (Python 3.7+)
+# 4. PYTEST (Testing Framework)
+# 5. PYTEST ASSERT PATTERNS
+# 6. PYTEST FIXTURES (Setup/Teardown)
+# 7. PYTEST MARKS (Categorizing Tests)
+# 8. ADVANCED PYTEST FIXTURES (tmp_path, capsys, monkeypatch)
+# 9. VS CODE DEBUGGER (Interactive Debugging)
+# 10. LOGGING (Professional Debug Output)
+# 11. BUILT-IN DEBUGGER (pdb)
+# 12. DOCTEST (Testing from Docstrings)
+# 13. UNITTEST (Built‑in Testing Framework)
+# 14. TIMEIT (Performance Measurement)
+# 15. TEST STRUCTURE (AAA Pattern)
+# 16. RUNNING TESTS COMMANDS
+# 17. PYTEST CONFIGURATION (pytest.ini)
+# 18. QUICK REFERENCE TABLE
 #
 # ========================================
 
 
-# Debugging = finding and fixing errors in your code.
-# Testing = writing code that checks if your code works correctly.
+# Definition: Debugging is the process of finding and fixing errors in code.
+# Testing is writing code that verifies that your code works correctly.
 
 
-# ---------- 1. PRINT DEBUGGING (Quick & Dirty) ----------
+# ---------- 1. PRINT STATEMENT DEBUGGING ----------
 
-# Definition: Inserting print() statements to see variable values and program flow.
-# Use when: You need a fast, no-setup way to see what's happening.
+# Definition: Insert print() statements to inspect variable values and trace program flow.
+# Simplest technique; useful for quick checks or when no debugger is available.
 
-# Example: Print variable values at key points
 def calculate_total(prices):
     print(f"DEBUG: prices = {prices}")   # See input
     total = sum(prices)
@@ -41,45 +45,58 @@ print(">>> Entering function")
 # ... code ...
 print("<<< Exiting function")
 
-# Print variable types to debug type issues
+# Print variable types
 value = "42"
-print(f"Type of value: {type(value)}")  # <class 'str'>
-
+print(f"Type: {type(value)}")  # <class 'str'>
 
 
 # ---------- 2. ASSERTIONS (Runtime Checks) ----------
 
-# Definition: Assertions test if a condition is True. If False, raises AssertionError.
-# Use when: You want to catch impossible states during development.
+# Definition: Assertions test if a condition is True; if False, raises AssertionError.
+# Use to catch impossible states during development.
 
 def divide(a, b):
-    assert b != 0, "Division by zero!"  # Stops program if b == 0
+    assert b != 0, "Division by zero!"
     return a / b
 
 # Basic assertion
-assert 2 + 2 == 4        # Silent (True)
-# assert 2 + 2 == 5     # AssertionError
+assert 2 + 2 == 4
 
-# Assert with custom message
+# With custom message
 x = -5
 assert x > 0, f"x must be positive, got {x}"
 
-# Common assertion patterns
+# Common patterns
 assert len(my_list) > 0, "List is empty"
 assert isinstance(value, int), "Value must be integer"
 assert result == expected, f"Expected {expected}, got {result}"
 
+# Disable assertions globally: run with `python -O script.py`
 
 
-# ---------- 3. PYTEST (Testing Framework) ----------
+# ---------- 3. THE `breakpoint()` BUILT‑IN (Python 3.7+) ----------
 
-# Definition: A library that discovers and runs tests automatically.
+# Definition: Drops you into the default debugger (pdb by default).
+# More flexible than pdb.set_trace(); can be disabled via environment variable.
+
+def buggy_function(x):
+    result = x * 2
+    breakpoint()                 # Execution stops here, enters pdb
+    return result + 1
+
+# Disable all breakpoints: `PYTHONBREAKPOINT=0 python script.py`
+# Use a different debugger: `PYTHONBREAKPOINT=ipdb.set_trace`
+
+
+# ---------- 4. PYTEST (Testing Framework) ----------
+
+# Definition: A popular library that discovers and runs tests automatically.
+
 # Install: pip install pytest
-
 # File naming: test_*.py or *_test.py
-# Each test is a function starting with "test_"
+# Test functions must start with `test_`
 
-# Example test file: test_calculator.py
+# Example (test_calculator.py):
 """
 def add(a, b):
     return a + b
@@ -89,23 +106,19 @@ def test_add():
     assert add(-1, 1) == 0
 """
 
-# Run tests: just type `pytest` in the terminal.
+# Run with `pytest` in the terminal.
 
 
-
-# ---------- 4. PYTEST ASSERT PATTERNS ----------
+# ---------- 5. PYTEST ASSERT PATTERNS ----------
 
 # Definition: Different ways to check expected behavior.
 
-# Equality
+# Equality / Inequality
 assert result == expected
-
-# Inequality
 assert result != 0
 
 # Truthy / Falsy
 assert True
-assert False is False
 assert value is None
 
 # Membership
@@ -115,10 +128,9 @@ assert item not in my_list
 # Type checking
 assert isinstance(value, int)
 
-# Approximate equality for floats (use pytest.approx)
+# Float approximation
 import pytest
 assert 0.1 + 0.2 == pytest.approx(0.3)
-assert 1.5 == pytest.approx(1.5, rel=0.01)  # relative tolerance
 
 # Exception testing
 def test_divide_by_zero():
@@ -130,17 +142,15 @@ with pytest.raises(ValueError, match="Invalid input"):
     validate_input(-1)
 
 
-
-# ---------- 5. PYTEST FIXTURES (Setup/Teardown) ----------
+# ---------- 6. PYTEST FIXTURES (Setup/Teardown) ----------
 
 # Definition: Fixtures provide reusable data or setup for tests.
-# Use when: Multiple tests need the same preparation.
+# Use when multiple tests need the same preparation.
 
 import pytest
 
 @pytest.fixture
 def sample_data():
-    """Creates sample data before each test."""
     return [1, 2, 3, 4, 5]
 
 def test_sum(sample_data):
@@ -149,156 +159,203 @@ def test_sum(sample_data):
 def test_length(sample_data):
     assert len(sample_data) == 5
 
-# Fixture with cleanup (teardown)
+# Fixture with teardown
 @pytest.fixture
 def temp_file():
-    # Setup
     with open("temp.txt", "w") as f:
         f.write("test")
-    yield                      # Test runs here
-    # Teardown (runs after test)
+    yield                      # test runs here
     import os
-    os.remove("temp.txt")
+    os.remove("temp.txt")      # cleanup
+
+# Fixture scope: "function" (default), "class", "module", "session"
+@pytest.fixture(scope="module")
+def shared_resource():
+    return {"data": 42}
 
 
-
-# ---------- 6. PYTEST MARKS (Categorizing Tests) ----------
+# ---------- 7. PYTEST MARKS (Categorizing Tests) ----------
 
 # Definition: Marks let you tag tests for selective running or skipping.
 
-# Mark as slow
 @pytest.mark.slow
 def test_heavy_computation():
     pass
 
-# Skip test unconditionally
-@pytest.mark.skip(reason="Not implemented yet")
+@pytest.mark.skip(reason="Not implemented")
 def test_future():
     pass
 
-# Skip if condition is true
-import sys
 @pytest.mark.skipif(sys.version_info < (3, 10), reason="Python 3.10+ required")
 def test_new_feature():
     pass
 
-# Expected failure (known bug)
-@pytest.mark.xfail
-def test_buggy_feature():
-    pass
+@pytest.mark.xfail  # expected failure
+def test_known_bug():
+    assert 1 == 2
 
 # Parametrize – run same test with different inputs
-@pytest.mark.parametrize("input,expected", [
-    (1, 2),
-    (2, 4),
-    (3, 6),
-])
+@pytest.mark.parametrize("input,expected", [(1,2), (2,4), (3,6)])
 def test_double(input, expected):
     assert input * 2 == expected
 
-# Multiple parameters
-@pytest.mark.parametrize("a,b,expected", [
-    (1, 2, 3),
-    (5, 5, 10),
-    (-1, 1, 0),
-])
-def test_add(a, b, expected):
-    assert a + b == expected
+
+# ---------- 8. ADVANCED PYTEST FIXTURES (tmp_path, capsys, monkeypatch) ----------
+
+# tmp_path – temporary directory (unique per test, auto‑deleted)
+def test_tmp_file(tmp_path):
+    d = tmp_path / "sub"
+    d.mkdir()
+    f = d / "hello.txt"
+    f.write_text("content")
+    assert f.read_text() == "content"
+
+# capsys – capture stdout/stderr
+def test_capsys(capsys):
+    print("Hello")
+    captured = capsys.readouterr()
+    assert captured.out == "Hello\n"
+
+# monkeypatch – modify environment, attributes, dictionaries
+def test_monkeypatch(monkeypatch):
+    monkeypatch.setenv("API_KEY", "fake-key")
+    assert os.getenv("API_KEY") == "fake-key"
 
 
+# ---------- 9. VS CODE DEBUGGER (Interactive Debugging) ----------
 
-# ---------- 7. VS CODE DEBUGGER (Interactive Debugging) ----------
-
-# Definition: A graphical tool that lets you pause execution and inspect variables.
-# Use when: You need to step through code line by line.
+# Definition: Graphical debugger that lets you pause execution and inspect variables.
 
 # How to use:
-# 1. Click to the left of a line number → red dot (breakpoint)
+# 1. Click left of a line number → red dot (breakpoint)
 # 2. Press F5 (Run → Start Debugging)
-# 3. Use debug buttons:
 
-# Debug buttons and their actions:
-# - Continue (F5)      → Run to next breakpoint
-# - Step Over (F10)    → Execute current line, move to next line
-# - Step Into (F11)    → Go inside a function call
-# - Step Out (Shift+F11) → Finish current function and return
-# - Stop (Shift+F5)    → End debugging
+# Debug controls:
+# - Continue (F5)      → run to next breakpoint
+# - Step Over (F10)    → execute current line, move to next
+# - Step Into (F11)    → enter function call
+# - Step Out (Shift+F11) → finish current function
+# - Stop (Shift+F5)    → end debugging
 
-# Debug panel shows:
-# - Variables: current variable values
-# - Watch: custom expressions you want to track
-# - Call Stack: which functions called the current one
-# - Breakpoints: list of all breakpoints
+# Conditional breakpoint: right‑click → "Edit breakpoint" → e.g., `x > 10`
+
+# Debug panel shows Variables, Watch, Call Stack, Breakpoints.
 
 
+# ---------- 10. LOGGING (Professional Debug Output) ----------
 
-# ---------- 8. LOGGING (Professional Debug Output) ----------
-
-# Definition: Logging records messages with severity levels, can write to file.
-# Use when: You need persistent logs or different output levels.
+# Definition: Logging records messages with severity levels; can write to file.
 
 import logging
 
-# Basic configuration
 logging.basicConfig(
-    level=logging.DEBUG,                      # Show all messages at or above DEBUG
+    level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='debug.log',                     # Optional: write to file
-    filemode='w'                              # 'w' overwrite, 'a' append
+    filename='debug.log',
+    filemode='w'
 )
 
-# Logging levels (increasing severity)
-logging.debug("Detailed diagnostic info")     # Level 10
-logging.info("General information")           # Level 20
-logging.warning("Something unexpected")       # Level 30
-logging.error("An error occurred")            # Level 40
-logging.critical("Program may crash")         # Level 50
+# Levels (severity)
+logging.debug("Detailed info")
+logging.info("General info")
+logging.warning("Unexpected")
+logging.error("Error occurred")
+logging.critical("Crash")
 
-# Example with variable
+# With variables
 name = "Alice"
 logging.debug(f"Processing {name}")
 
-# Conditional logging
-if error_occurred:
-    logging.error(f"Failed with value {x}")
+# Send to both console and file (custom handler)
+logger = logging.getLogger(__name__)
+console = logging.StreamHandler()
+logger.addHandler(console)
 
 
+# ---------- 11. BUILT-IN DEBUGGER (pdb) ----------
 
-# ---------- 9. BUILT-IN DEBUGGER (pdb) ----------
-
-# Definition: Command-line debugger built into Python.
-# Use when: You cannot use VS Code (e.g., on remote server).
+# Definition: Command‑line debugger built into Python.
 
 import pdb
 
-# Insert breakpoint
-def buggy_function(x):
-    result = x * 2
-    pdb.set_trace()          # Execution stops here
-    return result + 1
+# Old way
+pdb.set_trace()
 
-# Run script normally; pdb will activate at set_trace().
+# Modern way (Python 3.7+)
+breakpoint()
 
-# pdb commands (type at (Pdb) prompt):
-# - n (next)     → Execute next line
-# - s (step)     → Step into function
-# - c (continue) → Continue until next breakpoint
-# - p var        → Print variable value
-# - q (quit)     → Exit debugger
-# - l (list)     → Show code around current line
-# - h (help)     → Show all commands
+# Start script with pdb: `python -m pdb script.py`
 
-# Alternative: Run script with pdb from the start:
-# python -m pdb my_script.py
+# Commands (type at (Pdb) prompt):
+# n (next)      → execute next line
+# s (step)      → step into function
+# c (continue)  → run until next breakpoint
+# p var         → print variable
+# q (quit)      → exit debugger
+# l (list)      → show code around current line
+# h (help)      → show all commands
+# up / down     → move call stack
+# args          → show function arguments
+# !python_code  → execute arbitrary Python (e.g., `!x = 10`)
 
 
+# ---------- 12. DOCTEST (Testing from Docstrings) ----------
 
-# ---------- 10. TEST STRUCTURE (AAA Pattern) ----------
+# Definition: Tests written in docstrings are run as simple assertions.
+
+def add(a, b):
+    """
+    >>> add(2, 3)
+    5
+    >>> add(-1, 1)
+    0
+    """
+    return a + b
+
+# Run doctests:
+# python -m doctest mymodule.py
+# python -m doctest -v mymodule.py  # verbose
+
+
+# ---------- 13. UNITTEST (Built‑in Testing Framework) ----------
+
+# Definition: Python's built‑in testing framework (more verbose than pytest).
+
+import unittest
+
+class TestMath(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(add(2, 3), 5)
+        self.assertEqual(add(-1, 1), 0)
+
+    def test_divide(self):
+        with self.assertRaises(ZeroDivisionError):
+            divide(10, 0)
+
+if __name__ == "__main__":
+    unittest.main()
+
+# Run: python test_script.py
+
+
+# ---------- 14. TIMEIT (Performance Measurement) ----------
+
+# Definition: Measure execution time of small code snippets.
+
+import timeit
+
+# Measure a statement (average of 10000 runs)
+t = timeit.timeit("sum(range(100))", number=10000)
+print(f"Average: {t / 10000:.6f} seconds")
+
+# From command line: `python -m timeit "sum(range(100))"`
+
+# In IPython / Jupyter: `%timeit sum(range(100))`
+
+
+# ---------- 15. TEST STRUCTURE (AAA Pattern) ----------
 
 # Definition: Arrange, Act, Assert – a standard pattern for organizing tests.
-# - Arrange: Set up input and expected state
-# - Act: Call the function being tested
-# - Assert: Verify the result
 
 def test_calculate_discount():
     # Arrange
@@ -311,87 +368,62 @@ def test_calculate_discount():
 
 # Edge cases to always test
 def test_edge_cases():
-    # Empty input
-    assert process([]) == []
-    # Single item
-    assert process([1]) == [1]
-    # Negative numbers
-    assert process([-1, -2]) == [-1, -2]
-    # Large numbers
-    assert process([10**6]) == [10**6]
-    # Zero
-    assert process([0]) == [0]
+    assert process([]) == []          # empty
+    assert process([1]) == [1]        # single
+    assert process([-1, -2]) == [-1, -2]  # negatives
+    assert process([10**6]) == [10**6]    # large
+    assert process([0]) == [0]            # zero
 
 
+# ---------- 16. RUNNING TESTS COMMANDS ----------
 
-# ---------- 11. RUNNING TESTS COMMANDS ----------
-
-# Command line examples (not Python code, but useful to know):
-
-# Run all tests in current directory
-# $ pytest
-
-# Run tests in a specific file
-# $ pytest test_calculator.py
-
-# Run a specific test function
-# $ pytest test_calculator.py::test_add
-
-# Run with verbose output (shows test names)
-# $ pytest -v
-
-# Run with print statements shown
-# $ pytest -s
-
-# Run with coverage (requires pytest-cov)
-# $ pytest --cov=calculator
-
-# Run tests with a specific marker
-# $ pytest -m slow
-
-# Run tests in parallel (requires pytest-xdist)
-# $ pytest -n 4
+# $ pytest                          # all tests
+# $ pytest test_calc.py             # one file
+# $ pytest test_calc.py::test_add   # specific test
+# $ pytest -v                       # verbose
+# $ pytest -s                       # show print() output
+# $ pytest --cov=myfile             # coverage (install pytest-cov)
+# $ pytest -m slow                  # run only slow‑marked tests
+# $ pytest -x                       # stop on first failure
+# $ pytest -k "add"                 # run tests containing "add" in name
+# $ pytest -n 4                     # parallel (install pytest-xdist)
 
 
+# ---------- 17. PYTEST CONFIGURATION (pytest.ini) ----------
 
-# ---------- 12. PYTEST CONFIGURATION (pytest.ini) ----------
-
-# Definition: A configuration file to customize pytest behavior.
-
-# Example pytest.ini file (create in project root):
+# Example pytest.ini (in project root):
 """
 [pytest]
-# Test discovery patterns
 python_files = test_*.py
 python_classes = Test*
 python_functions = test_*
-
-# Custom markers
 markers =
     slow: Tests that take a long time
     unit: Unit tests
     integration: Integration tests
-
-# Default options
 addopts = -v -s
-
-# Ignore directories
 norecursedirs = .venv .git __pycache__
 """
 
 
+# ---------- 18. QUICK REFERENCE TABLE ----------
 
-# ---------- 13. QUICK REFERENCE TABLE ----------
-
-# | Concept              | Purpose                                   | Example                         |
-# |----------------------|-------------------------------------------|---------------------------------|
-# | print()              | Quick variable inspection                 | print(f"x={x}")                 |
-# | assert               | Runtime sanity check                      | assert x > 0                    |
-# | pytest               | Full test framework                       | def test_func(): assert ...     |
-# | pytest.fixture       | Reusable test setup                       | @pytest.fixture                 |
-# | pytest.mark.parametrize | Test multiple inputs                    | @pytest.mark.parametrize(...)   |
-# | pytest.raises        | Test exceptions                           | with pytest.raises(Error):      |
-# | VS Code debugger     | Step through code                         | F5, breakpoints                 |
-# | logging              | Persistent debug output                   | logging.debug("msg")            |
-# | pdb                  | Command-line debugger                     | pdb.set_trace()                 |
-# | coverage             | Measure which lines are tested            | pytest --cov=myfile             |
+# | Concept                 | Purpose                                   | Example                         |
+# |-------------------------|-------------------------------------------|---------------------------------|
+# | print()                 | Quick variable inspection                 | print(f"x={x}")                 |
+# | assert                  | Runtime sanity check                      | assert x > 0                    |
+# | breakpoint()            | Launch debugger                           | breakpoint()                    |
+# | pytest                  | Test framework                            | def test_func(): assert ...     |
+# | pytest.fixture          | Reusable test setup                       | @pytest.fixture                 |
+# | pytest.mark.parametrize | Test multiple inputs                      | @pytest.mark.parametrize(...)   |
+# | pytest.raises           | Test exceptions                           | with pytest.raises(Error):      |
+# | tmp_path                | Temporary directory fixture               | def test(tmp_path):              |
+# | capsys                  | Capture stdout/stderr                     | capsys.readouterr()             |
+# | monkeypatch             | Modify environment                        | monkeypatch.setenv(...)         |
+# | VS Code debugger        | Step‑through debugging                    | F5, breakpoints                 |
+# | logging                 | Persistent logs                           | logging.debug("msg")            |
+# | pdb                     | Command‑line debugger                     | pdb.set_trace()                 |
+# | doctest                 | Tests in docstrings                       | python -m doctest file.py       |
+# | unittest                | Built‑in framework                        | unittest.TestCase               |
+# | timeit                  | Performance measurement                   | timeit.timeit(...)              |
+# | coverage                | Measure tested lines                      | pytest --cov=myfile             |

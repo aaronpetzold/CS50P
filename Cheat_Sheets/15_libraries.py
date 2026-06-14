@@ -17,20 +17,29 @@
 # 12. statistics (Basic Stats)
 # 13. hashlib (Hashing for Security)
 # 14. argparse (Professional CLI Tools)
-# 15. Third-Party Libraries (pip install)
-# 16. Creating Your Own Module
-# 17. Creating Your Own Package
-# 18. if __name__ == "__main__"
-# 19. Managing Packages with pip
-# 20. Quick Reference
+# 15. pathlib (Object‑Oriented Paths)
+# 16. shutil (High‑Level File Operations)
+# 17. glob (File Pattern Matching)
+# 18. functools (Functional Tools)
+# 19. logging (Professional Logging)
+# 20. pprint (Pretty‑Print Data)
+# 21. Third-Party Libraries (pip install)
+# 22. Creating Your Own Module
+# 23. Creating Your Own Package
+# 24. if __name__ == "__main__"
+# 25. Managing Packages with pip
+# 26. Quick Reference
 #
 # ========================================
 
 
-# How to use Python's standard library, external APIs, and create your own modules/packages.
+# Definition: This cheat sheet covers Python's standard library modules,
+# external APIs, third‑party libraries, and creating modules/packages.
 
 
 # === 1. IMPORTS (Basics) ===
+
+# Definition: Ways to import modules and inspect their contents.
 
 # Import entire module
 import math
@@ -53,8 +62,9 @@ print(dir(random))          # List all names
 help(random.choice)         # Show documentation
 
 
-
 # === 2. sys (System & Command Line) ===
+
+# Definition: Provides access to system‑specific parameters and functions.
 
 import sys
 
@@ -82,8 +92,9 @@ sys.stderr.write("Error!\n")        # For error messages
 sys.setrecursionlimit(2000)
 
 
-
 # === 3. os (Operating System Interface) ===
+
+# Definition: Provides functions for interacting with the operating system.
 
 import os
 
@@ -106,13 +117,13 @@ os.rmdir("empty_folder")            # Remove empty directory
 print(os.environ.get("PATH"))       # Get environment variable
 os.environ["MY_VAR"] = "value"      # Set (temporary)
 
-# Run system command
-os.system("echo Hello")             # Runs in shell (simple but limited)
-# Better: use subprocess module
-
+# Run system command (simple but limited; use subprocess for more control)
+os.system("echo Hello")
 
 
 # === 4. subprocess (Run External Commands) ===
+
+# Definition: Run external commands and capture their output.
 
 import subprocess
 
@@ -126,8 +137,9 @@ print(result.returncode)            # 0 if success
 subprocess.run("echo Hello", shell=True)
 
 
-
 # === 5. datetime (Dates & Times) ===
+
+# Definition: Classes for manipulating dates and times.
 
 import datetime as dt
 
@@ -154,8 +166,9 @@ print(age.days)                     # Number of days
 # %Y = 2024, %m = 01, %d = 31, %H = 24h, %I = 12h, %M = minute, %S = second
 
 
-
 # === 6. time (Sleep & Timers) ===
+
+# Definition: Functions for measuring time intervals and pausing execution.
 
 import time
 
@@ -169,8 +182,9 @@ elapsed = time.time() - start
 print(f"Took {elapsed:.2f} seconds")
 
 
-
 # === 7. re (Regular Expressions) ===
+
+# Definition: Regular expression matching operations.
 
 import re
 
@@ -194,8 +208,9 @@ parts = re.split(r"\s+", "a  b   c")        # ['a','b','c']
 # \d = digit, \w = word, \s = whitespace, . = anything, + = one or more, * = zero or more
 
 
-
 # === 8. json (API Data Format) ===
+
+# Definition: Parse and write JSON data.
 
 import json
 
@@ -217,10 +232,10 @@ with open("output.json", "w") as f:
     json.dump(data, f, indent=2)
 
 
-
 # === 9. requests (HTTP & APIs) ===
 
-# Install: pip install requests
+# Definition: Make HTTP requests (third‑party library, install with `pip install requests`).
+
 import requests
 
 # --- GET Request (Read) ---
@@ -302,8 +317,9 @@ with open("image.jpg", "wb") as f:
 # print(resp.json()["main"]["temp"])
 
 
-
 # === 10. collections (Advanced Data Structures) ===
+
+# Definition: High‑performance container datatypes.
 
 from collections import Counter, defaultdict, namedtuple, deque
 
@@ -330,8 +346,9 @@ q.appendleft(0)                 # [0,1,2,3]
 q.popleft()                     # 0
 
 
-
 # === 11. itertools (Iteration Tools) ===
+
+# Definition: Functions that create iterators for efficient looping.
 
 from itertools import chain, cycle, product, combinations, permutations
 
@@ -352,8 +369,9 @@ list(combinations([1,2,3], 2))  # [(1,2),(1,3),(2,3)]
 list(permutations([1,2,3], 2))  # [(1,2),(1,3),(2,1),(2,3),(3,1),(3,2)]
 
 
-
 # === 12. statistics (Basic Stats) ===
+
+# Definition: Mathematical statistics functions.
 
 import statistics
 
@@ -363,8 +381,9 @@ statistics.median(data)         # 30
 statistics.stdev(data)          # ~15.81 (standard deviation)
 
 
-
 # === 13. hashlib (Hashing for Security) ===
+
+# Definition: Cryptographic hashing functions.
 
 import hashlib
 
@@ -377,8 +396,9 @@ password = "mysecret".encode()
 hashed = hashlib.sha256(password).hexdigest()
 
 
-
 # === 14. argparse (Professional CLI Tools) ===
+
+# Definition: Parser for command-line options, arguments, and subcommands.
 
 import argparse
 
@@ -395,11 +415,104 @@ if args.verbose:
 # Run script: python script.py --input data.txt --verbose
 
 
+# === 15. pathlib (Object‑Oriented Paths) ===
 
-# === 15. Third-Party Libraries (pip install) ===
+# Definition: Manipulate filesystem paths using an object‑oriented API.
 
-# ---- requests (already covered) ----
-# pip install requests
+from pathlib import Path
+
+p = Path("folder/subfolder/file.txt")
+p.exists()                      # True if exists
+p.is_file()                     # True if it's a file
+p.is_dir()                      # True if it's a directory
+p.parent                        # Path("folder/subfolder")
+p.name                          # "file.txt"
+p.stem                          # "file"
+p.suffix                        # ".txt"
+p.with_suffix(".csv")           # Path("folder/subfolder/file.csv")
+
+# Read and write text
+p.write_text("Hello")           # Writes string to file
+content = p.read_text()         # Reads entire file
+
+# Iterate over directory contents
+for child in Path(".").iterdir():
+    print(child)
+
+
+# === 16. shutil (High‑Level File Operations) ===
+
+# Definition: Copy, move, remove files/directories.
+
+import shutil
+
+shutil.copy("src.txt", "dst.txt")       # Copy file
+shutil.move("old.txt", "new.txt")       # Move or rename
+shutil.rmtree("folder")                 # Delete folder and all its contents
+shutil.copytree("src_folder", "dst_folder")  # Recursively copy a directory
+
+
+# === 17. glob (File Pattern Matching) ===
+
+# Definition: Find files matching a wildcard pattern.
+
+import glob
+
+# All .py files in current directory
+py_files = glob.glob("*.py")
+
+# Recursive search (Python 3.5+)
+all_py = glob.glob("**/*.py", recursive=True)
+
+
+# === 18. functools (Functional Tools) ===
+
+# Definition: Higher‑order functions and operations on callable objects.
+
+from functools import partial, lru_cache
+
+# partial – freeze some arguments of a function
+def power(base, exp):
+    return base ** exp
+
+square = partial(power, exp=2)
+print(square(5))                # 25
+
+# lru_cache – memoize function results
+@lru_cache(maxsize=128)
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n-1) + fib(n-2)
+
+
+# === 19. logging (Professional Logging) ===
+
+# Definition: Flexible event logging system.
+
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.debug("Debug message")      # Won't appear (level INFO)
+logging.info("Info message")
+logging.warning("Warning message")
+logging.error("Error message")
+logging.critical("Critical message")
+
+
+# === 20. pprint (Pretty‑Print Data) ===
+
+# Definition: Print Python data structures in a readable, indented format.
+
+from pprint import pprint
+
+data = {"name": "Alice", "hobbies": ["reading", "coding"], "nested": {"a": [1,2,3]}}
+pprint(data)                        # Pretty printed, one line per element
+
+
+# === 21. Third-Party Libraries (pip install) ===
+
+# Definition: External libraries not included in the standard library.
 
 # ---- pandas (data analysis) ----
 # import pandas as pd
@@ -422,11 +535,14 @@ if args.verbose:
 # from bs4 import BeautifulSoup
 # soup = BeautifulSoup(html, "html.parser")
 
+# ---- requests (already covered) ----
+# pip install requests
 
 
-# === 16. Creating Your Own Module ===
+# === 22. Creating Your Own Module ===
 
-# A module is a single .py file.
+# Definition: A single .py file that can be imported.
+
 # Save as mymodule.py:
 """
 def greet(name):
@@ -443,10 +559,10 @@ from mymodule import add
 print(add(2, 3))
 
 
+# === 23. Creating Your Own Package ===
 
-# === 17. Creating Your Own Package ===
+# Definition: A directory with an __init__.py file.
 
-# A package is a directory with an __init__.py file.
 # Directory structure:
 """
 mypackage/
@@ -508,10 +624,10 @@ __all__ = ["main_function", "VERSION"]
 # Python caches compiled bytecode here. Safe to delete, will be regenerated.
 
 
+# === 24. if __name__ == "__main__" ===
 
-# === 18. if __name__ == "__main__" ===
+# Definition: Prevent code from running when the module is imported.
 
-# Prevents code from running when module/package is imported.
 def main():
     # Test or main code
     pass
@@ -520,8 +636,9 @@ if __name__ == "__main__":
     main()
 
 
+# === 25. Managing Packages with pip ===
 
-# === 19. Managing Packages with pip ===
+# Definition: Python's package installer.
 
 # List installed packages: pip list
 # Install: pip install package_name
@@ -538,8 +655,8 @@ setup(name="mypackage", version="0.1", packages=find_packages())
 # Then: pip install -e .   (changes reflect immediately)
 
 
+# === 26. Quick Reference ===
 
-# === 20. Quick Reference ===
 # | Library      | Purpose               | Key Functions                        |
 # |--------------|-----------------------|--------------------------------------|
 # | sys          | System/CLI            | argv, exit, path                     |
@@ -555,3 +672,9 @@ setup(name="mypackage", version="0.1", packages=find_packages())
 # | statistics   | Math stats            | mean, median, stdev                  |
 # | hashlib      | Hashing               | sha256, hexdigest                    |
 # | argparse     | CLI arguments         | ArgumentParser                       |
+# | pathlib      | Paths (OOP)           | Path, .read_text, .write_text        |
+# | shutil       | File operations       | copy, move, rmtree                   |
+# | glob         | Pattern matching      | glob                                 |
+# | functools    | Functional tools      | partial, lru_cache                   |
+# | logging      | Logging               | basicConfig, debug, info, error      |
+# | pprint       | Pretty printing       | pprint                               |

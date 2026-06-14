@@ -1,6 +1,24 @@
 # === Exceptions & Error Handling ===
 
-# === BASIC TRY/EXCEPT/ELSE/FINALLY ===
+
+# ========== TABLE OF CONTENTS ==========
+#
+# 1. BASIC TRY/EXCEPT/ELSE/FINALLY
+# 2. THE 'WITH' STATEMENT (CONTEXT MANAGERS)
+# 3. COMMON EXCEPTION TYPES
+# 4. ERROR OBJECT ACCESS
+# 5. RAISING & CUSTOM EXCEPTIONS
+# 6. PRACTICAL PATTERNS (input loop, safe dict, retry)
+# 7. BEST PRACTICES
+#
+# ========================================
+
+
+# Definition: Exceptions are errors detected during execution.
+# Exception handling allows a program to react to errors gracefully instead of crashing.
+
+
+# ---------- 1. BASIC TRY/EXCEPT/ELSE/FINALLY ----------
 
 try:
     # 1. Try something that might fail
@@ -21,14 +39,16 @@ finally:
     # 4. ALWAYS runs (used for cleanup)
     print("Closing resources...")
 
-# === THE 'WITH' STATEMENT (Context Managers) ===
 
-# Best practice for files: Automatic cleanup
+# ---------- 2. THE 'WITH' STATEMENT (CONTEXT MANAGERS) ----------
+
+# Best practice for files: automatic cleanup.
 with open("data.txt", "w") as file:
     file.write("Hello Python")
-# File is closed automatically here, even if an error occurs!
+# File is closed automatically here, even if an error occurs.
 
-# === COMMON EXCEPTION TYPES ===
+
+# ---------- 3. COMMON EXCEPTION TYPES ----------
 
 # ValueError:        int("abc")          (Invalid conversion)
 # TypeError:         len(42)             (Wrong operation for type)
@@ -36,7 +56,8 @@ with open("data.txt", "w") as file:
 # KeyError:          dict["missing"]     (Key not in dictionary)
 # FileNotFoundError: open("ghost.txt")   (Missing file)
 
-# === ERROR OBJECT ACCESS ===
+
+# ---------- 4. ERROR OBJECT ACCESS ----------
 
 try:
     x = int("abc")
@@ -44,9 +65,10 @@ except ValueError as e:
     print(f"Error message: {e}")           # "invalid literal for int()"
     print(f"Exception type: {type(e)}")    # <class 'ValueError'>
 
-# === RAISING & CUSTOM EXCEPTIONS ===
 
-# Raise a built-in error
+# ---------- 5. RAISING & CUSTOM EXCEPTIONS ----------
+
+# Raise a built‑in error
 def set_age(age):
     if age < 0:
         raise ValueError("Age cannot be negative!")
@@ -57,7 +79,8 @@ class InsufficientFundsError(Exception):
     """Raised when account balance is too low."""
     pass
 
-# === PRACTICAL PATTERNS ===
+
+# ---------- 6. PRACTICAL PATTERNS (input loop, safe dict, retry) ----------
 
 # 1. Input Validation Loop (CS50 style)
 def get_int(prompt):
@@ -81,9 +104,10 @@ for attempt in range(3):
         print(f"Retrying... ({attempt + 1})")
         time.sleep(1)
 
-# === BEST PRACTICES ===
+
+# ---------- 7. BEST PRACTICES ----------
 
 # 1. Be specific! Never use a bare 'except:' if possible.
 # 2. Don't use exceptions for normal control flow.
-# 3. Use 'with' statements for all external resources (files/DBs).
+# 3. Use 'with' statements for all external resources (files, DBs).
 # 4. Use 'pass' if you want to silently ignore a specific, expected error.

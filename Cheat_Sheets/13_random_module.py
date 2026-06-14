@@ -1,139 +1,162 @@
 # === Random Module ===
 
+
+# ========== TABLE OF CONTENTS ==========
+#
+# 1. BASIC RANDOM NUMBERS
+# 2. RANDOM FROM SEQUENCES (choice, sample, shuffle)
+# 3. PROBABILITY DISTRIBUTIONS
+# 4. SEEDS (REPRODUCIBLE RANDOMNESS)
+# 5. WEIGHTED RANDOM
+# 6. SECURE RANDOM (secrets)
+# 7. RANDOM STRINGS & PASSWORDS
+# 8. PRACTICAL PATTERNS (dice, lottery, sampling, Monte Carlo)
+#
+# ========================================
+
+
+# Definition: The random module generates pseudo‑random numbers.
+# For cryptographic security, use the secrets module instead.
+
+
+# ---------- 1. BASIC RANDOM NUMBERS ----------
+
 import random
-import secrets  # For cryptographic security
+import secrets          # for secure random
+import string
+import datetime
 
-# === BASIC RANDOM NUMBERS ===
+# Random float in [0.0, 1.0)
+random.random()                          # e.g., 0.548813
 
-# Random float: 0.0 <= x < 1.0
-random.random()                            # e.g., 0.548813...
-
-# Random float in range [a, b]
-random.uniform(1.5, 5.5)                   # e.g., 3.721...
+# Random float in [a, b]
+random.uniform(1.5, 5.5)                 # e.g., 3.721
 
 # Random integer: a <= x <= b
-random.randint(1, 10)                      # e.g., 7
+random.randint(1, 10)                    # e.g., 7
 
-# Random integer with step
-random.randrange(0, 100, 5)                # 0, 5, 10, ..., 95
+# Random integer with step (start, stop, step)
+random.randrange(0, 100, 5)              # 0,5,10,…,95
 
-# === RANDOM FROM SEQUENCES ===
+
+# ---------- 2. RANDOM FROM SEQUENCES (choice, sample, shuffle) ----------
 
 items = ["apple", "banana", "cherry", "date", "elderberry"]
 
-# Single random choice
-random.choice(items)                       # e.g., "cherry"
+# Single random element
+random.choice(items)                     # e.g., "cherry"
 
-# Multiple random choices (with replacement)
-random.choices(items, k=3)                 # e.g., ["banana", "apple", "banana"]
+# Multiple random elements with replacement (can repeat)
+random.choices(items, k=3)               # e.g., ["banana","apple","banana"]
 
-# Multiple unique choices (without replacement)
-random.sample(items, k=3)                  # e.g., ["date", "apple", "cherry"]
+# Multiple random elements without replacement (unique)
+random.sample(items, k=3)                # e.g., ["date","apple","cherry"]
 
-# Shuffle list (in-place)
+# Shuffle a list in‑place (no return value)
 cards = ["A♠", "K♠", "Q♠", "J♠"]
-random.shuffle(cards)                      # cards is now shuffled
+random.shuffle(cards)                    # cards is now shuffled
 
-# Create shuffled copy
+# Create a shuffled copy (original unchanged)
 original = [1, 2, 3, 4, 5]
 shuffled = random.sample(original, k=len(original))
 
-# === PROBABILITY DISTRIBUTIONS ===
 
-# Normal/Gaussian distribution (mean, standard deviation)
-random.gauss(0, 1)                         # e.g., -0.234...
+# ---------- 3. PROBABILITY DISTRIBUTIONS ----------
 
-# Exponential distribution (lambda = 1/mean)
-random.expovariate(1.5)                    # e.g., 0.723...
+# Normal/Gaussian (mean, standard deviation)
+random.gauss(0, 1)                       # e.g., -0.234
 
-# Triangular distribution (low, high, mode)
-random.triangular(1, 10, 5)                # e.g., 4.321...
+# Exponential (lambda = 1/mean)
+random.expovariate(1.5)                  # e.g., 0.723
+
+# Triangular (low, high, mode)
+random.triangular(1, 10, 5)              # e.g., 4.321
 
 # Beta distribution (alpha, beta)
-random.betavariate(0.5, 0.5)               # e.g., 0.234...
+random.betavariate(0.5, 0.5)             # e.g., 0.234
 
-# === SEEDS (REPRODUCIBLE RANDOMNESS) ===
 
-# Set seed for reproducibility
-random.seed(42)                            # Same seed = same sequence
-a = random.random()                        # Always 0.639... with seed(42)
+# ---------- 4. SEEDS (REPRODUCIBLE RANDOMNESS) ----------
 
-# Reset to random seed
-random.seed()                              # Uses system time
+# Set a seed – same seed produces the same sequence.
+random.seed(42)
+a = random.random()                      # always 0.639...
+random.seed()                            # reset to system time
 
-# Get/set state
-state = random.getstate()                  # Save current state
-# ... some random operations ...
-random.setstate(state)                     # Restore exact state
+# Save and restore the generator state.
+state = random.getstate()                # save current state
+# ... perform some random operations ...
+random.setstate(state)                   # restore exact state
 
-# === WEIGHTED RANDOM ===
+
+# ---------- 5. WEIGHTED RANDOM ----------
 
 items = ["common", "uncommon", "rare", "epic", "legendary"]
-weights = [50, 30, 15, 4, 1]               # Probabilities
+weights = [50, 30, 15, 4, 1]            # probabilities (sum = 100)
 
-# Weighted choice
+# Weighted choices (with replacement)
 random.choices(items, weights=weights, k=10)
 
-# Cumulative weights
-cum_weights = [50, 80, 95, 99, 100]        # Cumulative sum
+# Using cumulative weights directly
+cum_weights = [50, 80, 95, 99, 100]
 random.choices(items, cum_weights=cum_weights, k=5)
 
-# === SECURE RANDOM (CRYPTOGRAPHY) ===
 
-# Cryptographically secure random
-secrets.randbelow(100)                     # 0 <= x < 100 (secure)
-secrets.choice(items)                      # Secure random choice
-secrets.token_hex(16)                      # 32-char hex string
-secrets.token_urlsafe(16)                  # URL-safe string
+# ---------- 6. SECURE RANDOM (secrets) ----------
 
-# Compare: NOT secure for cryptography!
-random.randint(0, 99)                      # OK for games, NOT for passwords
+# Use secrets for passwords, tokens, etc. (cryptographically strong)
+secrets.randbelow(100)                   # 0 ≤ x < 100
+secrets.choice(items)                    # secure random choice
+secrets.token_hex(16)                    # 32‑character hex string
+secrets.token_urlsafe(16)                # URL‑safe base64 string
 
-# === RANDOM STRINGS & PASSWORDS ===
+# Regular random is NOT suitable for security.
+random.randint(0, 99)                    # OK for games, NOT for passwords
 
-import string
 
-# Random string
-letters = string.ascii_letters             # 'a-zA-Z'
-digits = string.digits                     # '0-9'
-punctuation = string.punctuation           # '!@#$%^&*()_+'
+# ---------- 7. RANDOM STRINGS & PASSWORDS ----------
 
-# Random password
+# Characters sets
+letters = string.ascii_letters           # 'a‑zA‑Z'
+digits = string.digits                   # '0‑9'
+punctuation = string.punctuation         # '!@#$%...'
+
+# Strong random password (12 characters)
 all_chars = letters + digits + punctuation
 password = ''.join(random.choices(all_chars, k=12))
 
-# Pronounceable password (xkcd style)
+# XKCD‑style memorable password (using a word list)
 words = ["correct", "horse", "battery", "staple"]
 password = '-'.join(random.choices(words, k=4))
 
 # Random hexadecimal color
-color = f"#{secrets.token_hex(3)}"         # e.g., '#a3f5c2'
+color = f"#{secrets.token_hex(3)}"       # e.g., '#a3f5c2'
 
-# === PRACTICAL PATTERNS ===
 
-# Dice roll
+# ---------- 8. PRACTICAL PATTERNS (dice, lottery, sampling, Monte Carlo) ----------
+
+# Dice roll (function)
 def roll_dice(sides=6, count=1):
     return [random.randint(1, sides) for _ in range(count)]
 
-# Random date
-import datetime
+# Random date between two dates
 start = datetime.date(2020, 1, 1)
 end = datetime.date(2023, 12, 31)
 random_date = start + datetime.timedelta(days=random.randint(0, (end - start).days))
 
-# Lottery numbers (unique)
+# Lottery numbers (unique, sorted)
 def lottery_numbers(pool=49, picks=6):
     return sorted(random.sample(range(1, pool + 1), k=picks))
 
-# Random sampling for testing
+# Random sampling for testing (100 unique indices)
 data = list(range(1000))
-test_set = random.sample(data, k=100)      # 100 unique test samples
+test_set = random.sample(data, k=100)
 
-# Monte Carlo simulation (estimating pi)
+# Monte Carlo estimation of π
 inside = 0
-total = 1000000
+total = 1_000_000
 for _ in range(total):
     x, y = random.random(), random.random()
-    if x*x + y*y <= 1:                     # Inside unit circle
+    if x*x + y*y <= 1:                   # inside unit circle
         inside += 1
-pi_estimate = 4 * inside / total           # Approximates π
+pi_estimate = 4 * inside / total
