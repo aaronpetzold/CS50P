@@ -1,4 +1,4 @@
-# --- project.py
+# --- project.py ---
 #
 # --- Bitcoin Profit Calculator ---
 

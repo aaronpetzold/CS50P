@@ -1,12 +1,12 @@
 # ₿ BITCOIN PROFIT CALCULATOR ₿
-#### Video Demo: 
+#### Video Demo: https://youtube.com/shorts/MgiQjQdDda0
 
 #### Description:
 This is a Command Line Interface (CLI) tool built in Python for my CS50P Final Project. It helps users calculate how much money they made or lost by investing in Bitcoin between two specific dates. It shows the total net profit or loss in US Dollars and also calculates the Return on Investment (ROI) as a percentage.
 
 The program uses two different sources for its price data. For older dates, it reads from a local file named `bitcoin.csv`. This file contains the daily closing prices of Bitcoin from January 1, 2010, up to early 2026. If a user wants to check a calculation up to the current day, the program automatically connects to the internet and fetches the live price using the CoinCap REST API.
 
-This live-pricing mechanism was heavily inspired by Week 4's Problem Set: Bitcoin Price Index (`bitcoin.py`). However, this final project significantly expands upon that foundation. While my original assignment from Week 4 was limited to taking a command-line argument and multiplying it by the current price from the CoinCap API, this final application upgrades the concept. It integrates a historical CSV database alongside the live API. By cross-referencing past records with current live endpoints, the calculator computes actual investment trajectories, net profit/loss margins, and percentage returns (ROI) over custom-defined time horizons.
+This live-pricing feature was inspired by Week 4's Problem Set: Bitcoin Price Index (`bitcoin.py`). My final project picks up that idea and makes it much more useful. In Week 4, the script only took the amount of BitCoins from the command line and multiplied it by the current price from the CoinCap API. For this project, I combined that same CoinCap API with a historical CSV database. This allows the program to look up what Bitcoin was worth years ago, compare it to the price today, and figure out the actual profit and ROI percentage.
 
 
 ### Project Structure and Files
@@ -24,11 +24,11 @@ The project folder is organized with the following files:
 
 2. **`test_project.py`**: Contains the automated tests that are run with `pytest`. It tests the math formulas in `calculate_profit_loss`, makes sure `get_price_from_csv` handles missing files without crashing, and checks the data type of the API response.
 
-3. **`requirements.txt`**: A simple text file that lists the `requests` library. This is needed so that anyone else can install the necessary external library using `pip install -r requirements.txt`.
+3. **`requirements.txt`**: A simple text file that lists the `requests` library. This is needed so that anyone can install the necessary external library using `pip install -r requirements.txt`.
 
 4. **`bitcoin.csv`**: The local spreadsheet file that contains the historical dates and prices for Bitcoin.
 
 ### Design Choices
-One thing I had to think about was how to test the program with `pytest`. Functions that have `while True` loops and `input()` prompts inside them are very hard to test because `pytest` just freezes and waits for a human to type something. 
+One thing I had to think about was how to test the program with `pytest`. Functions that have `while True` loops and `input()` prompts inside them are very hard to test because `pytest` just freezes and waits for someone to type something. 
 
 Since CS50P only requires testing at least three helper functions, I chose to keep the inputs and loops inside the date and investment functions so the terminal interaction stays clean and simple. Then, I focused my tests entirely on the functions that do not use `input()`, like `calculate_profit_loss`, `get_price_from_csv`, and `get_sell_price_api`. This allowed me to keep my original program structure while still fully meeting the `pytest` requirements for the course.
