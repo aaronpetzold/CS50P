@@ -1,4 +1,4 @@
-# ₿ BITCOIN PROFIT CALCULATOR ₿
+# Investment Return Calculator
 #### Video Demo: https://youtube.com/shorts/MgiQjQdDda0
 
 #### Description:
